@@ -7,6 +7,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import TodoItem from "./data/TodoItem";
 import EditTodo from "./data/EditTodo";
 import AddTodo from "./data/AddTodo";
+import SearchTodo from "./data/SearchTodo";
 
 class TodoList extends Component {
   constructor(props) {
@@ -64,10 +65,10 @@ class TodoList extends Component {
         >
           <div className="card-header bg-primary">
             <div className="row justify-content-between d-flex align-items-center">
-              <div className="col-12 col-sm-8 h2 d-flex align-items-center text-light">
+              <div className="col-12 col-sm-8 h3 d-flex align-items-center text-light">
                 Pomona Todo App
               </div>
-              <div className="col-2 d-flex justify-content-sm-end justify-content-start">
+              <div className="col-2 d-flex align-self-center justify-content-sm-end justify-content-start">
                 <button className="btn btn-info" onClick={logout}>
                   Logout
                 </button>
@@ -88,6 +89,11 @@ class TodoList extends Component {
                 <i className="fa fa-plus mx-1" /> Add
               </button>
             )}
+            <div className="row justify-content-between d-flex align-items-center">
+              <div className="col-5">
+                <SearchTodo />
+              </div>
+            </div>
             <div
               id="scrollable"
               style={{ maxHeight: "60vh", overflowY: "auto" }}

@@ -35,7 +35,7 @@ const loadTodoSuccess = ({ todos = [], page, status, title }) => ({
 
 const loadTodoFailed = () => ({ type: LOAD_TODO_FAILED });
 
-export function loadTodos({ page, status, title }, cb) {
+export function loadTodos({ page, status, title }, cb = () => {}) {
   return (dispatch, getState) => {
     const { auth } = getState();
     let { token } = auth;

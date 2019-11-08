@@ -9,7 +9,8 @@ export default function TextInput({
   autoFocus,
   required,
   autoComplete,
-  readOnly
+  readOnly,
+  onKeyUp
 }) {
   const ro = Boolean(readOnly);
   return (
@@ -41,9 +42,10 @@ export default function TextInput({
           onChange={onChange}
           autoComplete={autoComplete}
           readOnly={ro}
+          onKeyUp={onKeyUp}
         />
       )}
-      {type !== 'textarea' && <label htmlFor={name}>{label}</label>}
+      {type !== "textarea" && <label htmlFor={name}>{label}</label>}
     </div>
   );
 }

@@ -12,13 +12,29 @@ class SearchTodo extends Component {
   }
 
   handleKeyUp = () => {
-    this.props.search(this.state.title)
+    this.props.search(this.state.title);
   };
 
-  render() {}
+  render() {
+    return (
+      <TextInput
+        type="text"
+        name="title"
+        label="Search todo"
+        value={this.state.title}
+        onChange={this.handleChange}
+        onKeyUp={this.handleKeyUp}
+      />
+    );
+  }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   search: title =>
     dispatch(loadTodos({ page: 1, status: ownProps.status, title }))
 });
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SearchTodo);
