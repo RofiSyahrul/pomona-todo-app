@@ -8,13 +8,12 @@ class AuthPage extends Component {
   constructor(props) {
     super(props);
     this.state = { activeTab: "register", width: 500 };
-    this.token = localStorage.getItem("token");
   }
 
   componentDidMount() {
     window.onload = () => this.setWidth(window.screen.width);
     window.addEventListener("resize", () => this.setWidth(window.screen.width));
-    if (this.token) this.props.redirectToTodo();
+    if (localStorage.getItem("token")) this.props.redirectToTodo();
   }
 
   componentWillUnmount() {
@@ -35,8 +34,9 @@ class AuthPage extends Component {
   render() {
     const { activeTab, width } = this.state;
     const { message } = this.props;
+    const token = localStorage.getItem("token");
     return (
-      !this.token && (
+      !token && (
         <div
           className="row align-items-center justify-content-center bg-info"
           style={{ height: "100vh", width: "100vw" }}
