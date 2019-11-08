@@ -1,10 +1,6 @@
 import {
   LOAD_TODO_SUCCESS,
   LOAD_TODO_FAILED,
-  GET_TODO,
-  GET_TODO_SUCCESS,
-  GET_TODO_FAILED,
-  ADD_TODO,
   ADD_TODO_SUCCESS,
   ADD_TODO_FAILED,
   TOGGLE_TODO,
@@ -48,7 +44,7 @@ export default function data(
     case LOAD_TODO_SUCCESS:
       newTodos = page > 1 ? [...state.todos, ...todos] : todos;
       newHasMore =
-        status === state.status || title === state.title
+        status === state.status && title === state.title
           ? newTodos.length > state.todos
           : true;
       return {

@@ -38,13 +38,15 @@ class TodoList extends Component {
 
   fetchMoreData = () => {
     const { hasMore, loadData, status, title } = this.props;
-    if (!hasMore) return;
-    this.setState(
-      state => ({ page: state.page + 1 }),
-      () => {
-        loadData({ page: this.state.page, status, title }, () => {});
-      }
-    );
+    let copiedPage = [...[this.state.page]][0];
+    if (!hasMore) loadData({ page: copiedPage + 1, status, title });
+    else
+      this.setState(
+        state => ({ page: state.page + 1 }),
+        () => {
+          loadData({ page: this.state.page, status, title });
+        }
+      );
   };
 
   showAddTodo = () => this.setState({ addTodoOn: true });
