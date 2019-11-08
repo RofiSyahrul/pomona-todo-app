@@ -9,12 +9,14 @@ import {
 } from "../constants";
 
 // RESPONSE TO REGISTER AND LOGIN
-function responseRegisterLogin(
+const responseAuth = (
   dispatch,
   doIfSuccess = token => ({ token }),
-  doIfFailed = message => ({ message })
-) {
+  doIfFailed = message => ({ message }),
+  cb = () => {}
+) => {
   return response => {
+    cb();
     const { data, statusCode } = response;
     if (statusCode === 200) {
       localStorage.setItem("token", data.token);
@@ -22,7 +24,7 @@ function responseRegisterLogin(
       dispatch(push("/todo"));
     } else dispatch(doIfFailed(data.message));
   };
-}
+};
 
 // START REGISTER
 const registerSuccess = token => ({
@@ -35,7 +37,7 @@ const registerFailed = message => ({
   message
 });
 
-export function register({ name, email, password }) {
+export function register({ name, email, password }, cb) {
   return dispatch => {
     fetch(BASE_URL + "/auth/register", {
       method: "POST",
@@ -46,8 +48,11 @@ export function register({ name, email, password }) {
       body: JSON.stringify({ name, email, password })
     })
       .then(res => res.json())
-      .then(responseRegisterLogin(dispatch, registerSuccess, registerFailed))
-      .catch(err => dispatch(registerFailed(err.toString())));
+      .then(responseAuth(dispatch, registerSuccess, registerFailed, cb))
+      .catch(err => {
+        cb();
+        dispatch(registerFailed(err.toString()));
+      });
   };
 }
 // END REGISTER
@@ -63,7 +68,7 @@ const loginFailed = message => ({
   message
 });
 
-export function login({ email, password }) {
+export function login({ email, password }, cb) {
   return dispatch => {
     fetch(BASE_URL + "/auth/login", {
       method: "POST",
@@ -74,8 +79,11 @@ export function login({ email, password }) {
       body: JSON.stringify({ email, password })
     })
       .then(res => res.json())
-      .then(responseRegisterLogin(dispatch, loginSuccess, loginFailed))
-      .catch(err => dispatch(loginFailed(err.toString())));
+      .then(responseAuth(dispatch, loginSuccess, loginFailed, cb))
+      .catch(err => {
+        cb();
+        dispatch(loginFailed(err.toString()));
+      });
   };
 }
 // END LOGIN

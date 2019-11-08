@@ -1,0 +1,15 @@
+span.stars,
+span.stars span {
+  display: block;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Font_Awesome_5_regular_star_grey.svg/512px-Font_Awesome_5_regular_star_grey.svg.png) 0 0 repeat-x;
+  width: 3rem;
+  /* width of a star multiplied by 3 */
+  height: 1rem;
+  /* the height of the star */
+  background-size: 1rem 1rem;
+}
+
+span.stars span {
+  background-position: 0 0;
+  background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/747/star.svg);
+}
