@@ -17,6 +17,7 @@ import {
   DELETE_TODO_FAILED,
   REMOVE_MESSAGE
 } from "../constants";
+import { showNotif } from "../helpers/showNotif";
 
 const TODO_URL = BASE_URL + "/todo";
 
@@ -94,13 +95,23 @@ export function addTodo({ title, priority, note }, cb = () => {}) {
       .then(res => res.json())
       .then(response => {
         const { data, statusCode } = response;
-        if (statusCode === 200) dispatch(addTodoSuccess(data));
-        else dispatch(addTodoFailed("You must be logged in. Add todo failed."));
+        let message, type;
+        if (statusCode === 200) {
+          dispatch(addTodoSuccess(data));
+          message = `${data.title} has been added to todo list.`;
+          type = "success";
+        } else {
+          message = "Add todo failed.";
+          type = "error";
+          dispatch(addTodoFailed(message));
+        }
         cb();
+        showNotif({ text: message, type });
       })
       .catch(() => {
         dispatch(addTodoFailed());
         cb();
+        showNotif({ text: "Add todo failed.", type: "error" });
       });
   };
 }
@@ -164,20 +175,27 @@ export function editTodo(newTodo = {}, oldTodo = {}) {
       .then(res => res.json())
       .then(response => {
         const { data, statusCode } = response;
-        if (statusCode === 200) dispatch(editTodoSuccess(data));
-        else {
+        let message, type;
+        if (statusCode === 200) {
+          message = "Edit success";
+          type = "success";
+          dispatch(editTodoSuccess(data));
+        } else {
+          message = "Edit failed";
+          type = "error";
           dispatch(
             editTodoFailed({
               oldTodo,
-              message: "You must be logged in. Edit failed."
+              message
             })
           );
-          dispatch(push("/"));
         }
+        showNotif({ text: message, type });
       })
-      .catch(() =>
-        dispatch(editTodoFailed({ oldTodo, message: "Edit failed." }))
-      );
+      .catch(() => {
+        showNotif({ text: "Edit failed.", type: "error" });
+        dispatch(editTodoFailed({ oldTodo, message: "Edit failed." }));
+      });
   };
 }
 // END EDIT TODO
@@ -211,24 +229,26 @@ export function deleteTodo(todo = {}) {
     })
       .then(res => res.json())
       .then(response => {
-        const {
+        let {
           data: { message },
           statusCode
         } = response;
-        if (statusCode === 200) dispatch(deleteTodoSuccess({ id, message }));
-        else {
-          dispatch(
-            deleteTodoFailed({
-              todo,
-              message: "You must be logged in. Delete failed."
-            })
-          );
+        let type;
+        if (statusCode === 200) {
+          type = "success";
+          dispatch(deleteTodoSuccess({ id, message }));
+        } else {
+          message = "You must be logged in. Delete failed.";
+          type = "error";
+          dispatch(deleteTodoFailed({ todo, message }));
           dispatch(push("/"));
         }
+        showNotif({ text: message, type });
       })
-      .catch(() =>
-        dispatch(deleteTodoFailed({ todo, message: "Delete failed." }))
-      );
+      .catch(() => {
+        showNotif({ text: "Delete failed.", type: "error" });
+        dispatch(deleteTodoFailed({ todo, message: "Delete failed." }));
+      });
   };
 }
 // END DELETE TODO

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import SelectInput from "../../components/SelectInput";
 import { loadTodos } from "../../actions/data";
 
-class SearchTodo extends Component {
+class FilterTodo extends Component {
   constructor(props) {
     super(props);
     this.state = { status: props.status };
@@ -17,6 +17,7 @@ class SearchTodo extends Component {
   handleChange = e => {
     this.setState({ status: e.target.value }, () => {
       this.props.filter(this.state.status);
+      this.props.resetPage();
     });
   };
 
@@ -42,4 +43,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
 export default connect(
   null,
   mapDispatchToProps
-)(SearchTodo);
+)(FilterTodo);

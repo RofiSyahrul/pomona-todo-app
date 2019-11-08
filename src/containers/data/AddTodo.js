@@ -9,7 +9,7 @@ import { addTodo } from "../../actions/data";
 class AddTodo extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: "", priority: 0, note: "", addLoading: false };
+    this.state = { title: "", priority: 1, note: "", addLoading: false };
     this.handleChange = handleChange.bind(this);
     this.handleSubmit = handleSubmit.bind(this);
   }
@@ -17,14 +17,16 @@ class AddTodo extends Component {
   render() {
     const { title, priority, note, addLoading } = this.state;
     const { addTodo, cancelAdd } = this.props;
+    const copiedTodo = JSON.parse(JSON.stringify({ title, priority, note }));
     return (
       <div className="card my-3">
         <div className="card-header h5">Add todo</div>
         <div className="card-body">
           <form
-            onSubmit={e =>
-              this.handleSubmit(e, 'addLoading', addTodo, this.state)
-            }
+            onSubmit={e => {
+              this.handleSubmit(e, "addLoading", addTodo, copiedTodo);
+              this.setState({ title: "", priority: 1, note: "" });
+            }}
           >
             <div className="row">
               <div className="col-sm-7 col-12">

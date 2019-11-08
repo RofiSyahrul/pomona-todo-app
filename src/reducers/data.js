@@ -38,17 +38,25 @@ export default function data(
     todo
   } = action;
 
-  let newTodos, newHasMore;
+  let newTodos, newHasMore, newTodosId;
 
   switch (type) {
     case LOAD_TODO_SUCCESS:
       newTodos = page > 1 ? [...state.todos, ...todos] : todos;
+      newTodos = newTodos.map(todo => ({ ...todo, onEdit: false, sent: true }));
+      // Looking for unique todo.id, return the indices
+      newTodosId = newTodos
+      .map(todo => todo.id)
+      .map((id, i, arr) => arr.indexOf(id))
+      .filter((index, i, arr) => arr.indexOf(index) === i);
+      // Looking for new todos that have distinc id
+      newTodos = newTodos.filter((todo, i) => newTodosId.includes(i));
       newHasMore =
         status === state.status && title === state.title
           ? newTodos.length > state.todos
           : true;
       return {
-        todos: newTodos.map(todo => ({ ...todo, onEdit: false, sent: true })),
+        todos: newTodos,
         page,
         status,
         title,

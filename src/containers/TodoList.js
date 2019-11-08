@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Swal from "sweetalert2";
 import { loadTodos, removeMessage } from "../actions/data";
 import { logout } from "../actions/auth";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -39,7 +38,7 @@ class TodoList extends Component {
 
   fetchMoreData = () => {
     const { hasMore, loadData, status, title } = this.props;
-    let copiedPage = [...[this.state.page]][0];
+    let copiedPage = JSON.parse(JSON.stringify([this.state.page]))[0];
     if (!hasMore) loadData({ page: copiedPage + 1, status, title });
     else
       this.setState(
@@ -50,26 +49,13 @@ class TodoList extends Component {
       );
   };
 
+  resetPage = () => this.setState({ page: 1 });
+
   showAddTodo = () => this.setState({ addTodoOn: true });
 
   hideAddTodo = () => this.setState({ addTodoOn: false });
 
-  showSwal = () => {
-    const {
-      message: { text, type },
-      turnOffSwal
-    } = this.props;
-    if (text && type) {
-      Swal.fire({
-        title: text,
-        icon: type,
-        timer: 2000
-      }).then(() => turnOffSwal());
-    }
-  };
-
   render() {
-    this.showSwal()
     const { todos, logout, hasMore, status, title } = this.props;
     return (
       <div
@@ -108,10 +94,18 @@ class TodoList extends Component {
             )}
             <div className="row justify-content-between d-flex align-items-center">
               <div className="col-12 col-sm-4">
-                <SearchTodo status={status} title={title} />
+                <SearchTodo
+                  status={status}
+                  title={title}
+                  resetPage={this.resetPage}
+                />
               </div>
               <div className="col-12 col-sm-8 d-flex align-self-center justify-content-sm-end justify-content-start">
-                <FilterTodo status={status} />
+                <FilterTodo
+                  status={status}
+                  title={title}
+                  resetPage={this.resetPage}
+                />
               </div>
             </div>
             <div

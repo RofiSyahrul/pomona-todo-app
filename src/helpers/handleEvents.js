@@ -12,12 +12,7 @@ export function handleSubmit(
   if (!loadingState) loadingState = "loading";
   this.setState({ [loadingState]: true }, () => {
     callback(...args, () => {
-      this.setState({
-        [loadingState]: false,
-        title: "",
-        priority: 0,
-        note: ""
-      });
+      this.setState({ [loadingState]: false });
     });
   });
 }
