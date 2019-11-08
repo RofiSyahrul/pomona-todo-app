@@ -17,11 +17,6 @@ export const LOGOUT = "LOGOUT";
 export const LOAD_TODO_SUCCESS = "LOAD_TODO_SUCCESS";
 export const LOAD_TODO_FAILED = "LOAD_TODO_FAILED";
 
-export const GET_TODO = "GET_TODO";
-export const GET_TODO_SUCCESS = "GET_TODO_SUCCESS";
-export const GET_TODO_FAILED = "GET_TODO_FAILED";
-
-export const ADD_TODO = "ADD_TODO";
 export const ADD_TODO_SUCCESS = "ADD_TODO_SUCCESS";
 export const ADD_TODO_FAILED = "ADD_TODO_FAILED";
 
