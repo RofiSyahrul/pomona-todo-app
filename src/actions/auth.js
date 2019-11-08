@@ -93,7 +93,7 @@ const logoutRedux = () => ({ type: LOGOUT });
 
 export function logout() {
   return dispatch => {
-    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
     dispatch(logoutRedux());
     dispatch(push("/"));
   };
