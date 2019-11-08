@@ -8,6 +8,7 @@ import TodoItem from "./data/TodoItem";
 import EditTodo from "./data/EditTodo";
 import AddTodo from "./data/AddTodo";
 import SearchTodo from "./data/SearchTodo";
+import FilterTodo from "./data/FilterTodo";
 
 class TodoList extends Component {
   constructor(props) {
@@ -37,8 +38,6 @@ class TodoList extends Component {
 
   fetchMoreData = () => {
     const { hasMore, loadData, status, title } = this.props;
-    console.log(hasMore);
-
     if (!hasMore) return;
     this.setState(
       state => ({ page: state.page + 1 }),
@@ -53,7 +52,7 @@ class TodoList extends Component {
   hideAddTodo = () => this.setState({ addTodoOn: false });
 
   render() {
-    const { todos, logout, hasMore } = this.props;
+    const { todos, logout, hasMore, status, title } = this.props;
     return (
       <div
         className="d-flex align-items-center justify-content-center"
@@ -90,8 +89,11 @@ class TodoList extends Component {
               </button>
             )}
             <div className="row justify-content-between d-flex align-items-center">
-              <div className="col-5">
-                <SearchTodo />
+              <div className="col-12 col-sm-4">
+                <SearchTodo status={status} title={title} />
+              </div>
+              <div className="col-12 col-sm-8 d-flex align-self-center justify-content-sm-end justify-content-start">
+                <FilterTodo status={status} />
               </div>
             </div>
             <div

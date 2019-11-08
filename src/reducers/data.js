@@ -41,18 +41,23 @@ export default function data(
     message,
     todo
   } = action;
-  let newTodos;
+
+  let newTodos, newHasMore;
 
   switch (type) {
     case LOAD_TODO_SUCCESS:
       newTodos = page > 1 ? [...state.todos, ...todos] : todos;
+      newHasMore =
+        status === state.status || title === state.title
+          ? newTodos.length > state.todos
+          : true;
       return {
         todos: newTodos.map(todo => ({ ...todo, onEdit: false, sent: true })),
         page,
         status,
         title,
         message: { text: "", type: "" },
-        hasMore: newTodos.length > state.todos
+        hasMore: newHasMore
       };
 
     case LOAD_TODO_FAILED:

@@ -10,10 +10,10 @@ export default function SelectInput({
 }) {
   return (
     <div className="form-group row">
-      <label htmlFor={name} className="col-12 col-sm-5 col-form-label">
+      <label htmlFor={name} className="col-12 col-sm-6 col-form-label">
         {label}
       </label>
-      <div className="col-12 col-sm-7">
+      <div className="col-12 col-sm-6">
         <select
           id={name}
           name={name}
@@ -22,11 +22,17 @@ export default function SelectInput({
           title={title}
           onChange={onChange}
         >
-          {values.map((value, i) => (
-            <option key={i} value={value}>
-              {value}
-            </option>
-          ))}
+          {values.map((value, i) => {
+            return typeof value === "object" ? (
+              <option key={i} value={value.value}>
+                {value.label}
+              </option>
+            ) : (
+              <option key={i} value={value}>
+                {value}
+              </option>
+            );
+          })}
         </select>
       </div>
     </div>
