@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { loadTodos } from "../actions/data";
+import Swal from "sweetalert2";
+import { loadTodos, removeMessage } from "../actions/data";
 import { logout } from "../actions/auth";
 import LoadingSpinner from "../components/LoadingSpinner";
 import TodoItem from "./data/TodoItem";
@@ -53,7 +54,22 @@ class TodoList extends Component {
 
   hideAddTodo = () => this.setState({ addTodoOn: false });
 
+  showSwal = () => {
+    const {
+      message: { text, type },
+      turnOffSwal
+    } = this.props;
+    if (text && type) {
+      Swal.fire({
+        title: text,
+        icon: type,
+        timer: 2000
+      }).then(() => turnOffSwal());
+    }
+  };
+
   render() {
+    this.showSwal()
     const { todos, logout, hasMore, status, title } = this.props;
     return (
       <div
@@ -136,7 +152,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadData: ({ page, status, title }, cb) =>
     dispatch(loadTodos({ page, status, title }, cb)),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  turnOffSwal: () => dispatch(removeMessage())
 });
 
 export default connect(

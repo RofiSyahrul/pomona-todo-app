@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import Swal from "sweetalert2";
 import Checkbox from "../../components/Checkbox";
 import Task from "../../components/Task";
 import { PRIORITIES as priorities } from "../../constants";
@@ -53,7 +54,30 @@ function TodoItem(props) {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   toggleCheck: id => dispatch(toggleTodo({ id, isDone: !ownProps.isDone })),
   showEdit: () => dispatch(setEditToON(ownProps.id)),
-  deleteTodo: () => dispatch(deleteTodo(ownProps))
+  deleteTodo: () => {
+    Swal.fire({
+      title: "Are you sure to delete it?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then(result => {
+      if (result.value) {
+        dispatch(deleteTodo(ownProps));
+      } else if (
+        /* Read more about handling dismissals below */
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        Swal.fire(
+          'Cancelled',
+          'Your todo is safe :)',
+          'error'
+        )
+      }
+    });
+  }
 });
 
 export default connect(
