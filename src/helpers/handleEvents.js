@@ -2,11 +2,22 @@ export function handleChange(event) {
   this.setState({ [event.target.name]: event.target.value });
 }
 
-export function handleSubmit(event, callback, ...args) {
+export function handleSubmit(
+  event,
+  loadingState,
+  callback = () => {},
+  ...args
+) {
   event.preventDefault();
-  this.setState({loading: true}, () => {
+  if (!loadingState) loadingState = "loading";
+  this.setState({ [loadingState]: true }, () => {
     callback(...args, () => {
-      this.setState({loading: false})
+      this.setState({
+        [loadingState]: false,
+        title: "",
+        priority: 0,
+        note: ""
+      });
     });
   });
 }

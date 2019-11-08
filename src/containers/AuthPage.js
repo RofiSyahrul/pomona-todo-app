@@ -52,7 +52,7 @@ class AuthPage extends Component {
                 <li className="nav-item w-50">
                   <a
                     href="/"
-                    className={`text-center nav-link ${
+                    className={`text-center text-dark nav-link ${
                       activeTab === "register" ? "active" : ""
                     }`}
                     onClick={e => this.setActiveTab(e, "register")}
@@ -63,7 +63,7 @@ class AuthPage extends Component {
                 <li className="nav-item w-50">
                   <a
                     href="/"
-                    className={`text-center nav-link ${
+                    className={`text-center text-dark nav-link ${
                       activeTab === "login" ? "active" : ""
                     }`}
                     onClick={e => this.setActiveTab(e, "login")}

@@ -1,5 +1,5 @@
 export const BASE_URL = "https://pomonatodo.herokuapp.com";
-export const LIMIT = 10;
+export const LIMIT = 6;
 export const PRIORITIES = {
   1: { color: "#1AECC9", text: "Low" },
   2: { color: "#fdf868", text: "Medium" },
@@ -35,3 +35,5 @@ export const EDIT_TODO_FAILED = "EDIT_TODO_FAILED";
 export const DELETE_TODO = "DELETE_TODO";
 export const DELETE_TODO_SUCCESS = "DELETE_TODO_SUCCESS";
 export const DELETE_TODO_FAILED = "DELETE_TODO_FAILED";
+
+export const REMOVE_MESSAGE = "REMOVE_MESSAGE";

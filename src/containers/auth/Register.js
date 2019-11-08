@@ -20,7 +20,7 @@ class Register extends Component {
     return (
       <form
         className="form-signin"
-        onSubmit={e => this.handleSubmit(e, register, this.state)}
+        onSubmit={e => this.handleSubmit(e, 'loading', register, this.state)}
       >
         <TextInput
           type="text"

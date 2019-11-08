@@ -12,26 +12,37 @@ function TodoItem(props) {
   const { text } = priorities[priority];
   return (
     <li className="list-group-item">
-      <div className="row d-flex align-items-center">
+      <div className="row d-flex align-items-center my-1">
         <div className="col-2 d-flex justify-content-center">
           <Checkbox {...{ id, isDone, toggleCheck }} />
         </div>
-        <div className="col-10 col-sm-8">
-          <div className="row">
-            <Task {...{ title, isDone, priority: {text, number: priority} }} />
+        <div className="col-10 col-sm-8" onDoubleClick={showEdit}>
+          <div className="row d-flex align-items-center">
+            <Task
+              {...{ title, isDone, priority: { text, number: priority } }}
+            />
           </div>
-          <div className="row">
+          <div
+            className="row d-flex align-items-end"
+            style={{ height: "3rem", overflowY: "auto" }}
+          >
             <div className="col-12 text-secondary">
               {isDone ? <del>{note}</del> : note}
             </div>
           </div>
         </div>
         <div className="col-12 col-sm-2 d-flex justify-content-center">
-          <button className="btn btn-success mx-1" onClick={() => showEdit(id)}>
-            <i className="fa fa-pencil-square-o"></i>
+          <button
+            className="btn text-success bg-transparent mx-1"
+            onClick={showEdit}
+          >
+            <i className="fa fa-pencil-square-o fa-lg"></i>
           </button>
-          <button className="btn btn-danger mx-1" onClick={deleteTodo}>
-            <i className="fa fa-trash"></i>
+          <button
+            className="btn text-danger bg-transparent mx-1"
+            onClick={deleteTodo}
+          >
+            <i className="fa fa-trash fa-lg"></i>
           </button>
         </div>
       </div>
@@ -41,7 +52,7 @@ function TodoItem(props) {
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   toggleCheck: id => dispatch(toggleTodo({ id, isDone: !ownProps.isDone })),
-  showEdit: id => dispatch(setEditToON(id)),
+  showEdit: () => dispatch(setEditToON(ownProps.id)),
   deleteTodo: () => dispatch(deleteTodo(ownProps))
 });
 

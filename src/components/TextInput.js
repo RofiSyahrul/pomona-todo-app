@@ -14,20 +14,36 @@ export default function TextInput({
   const ro = Boolean(readOnly);
   return (
     <div className="form-label-group">
-      <input
-        type={type}
-        id={name}
-        className={`form-control${ro ? '-plaintext' : ''}`}
-        placeholder={label}
-        required={Boolean(required)}
-        autoFocus={Boolean(autoFocus)}
-        name={name}
-        value={value}
-        onChange={onChange}
-        autoComplete={autoComplete}
-        readOnly={ro}
-      />
-      <label htmlFor={name}>{label}</label>
+      {type === "textarea" ? (
+        <textarea
+          id={name}
+          className={`form-control${ro ? "-plaintext" : ""}`}
+          placeholder={label}
+          required={Boolean(required)}
+          autoFocus={Boolean(autoFocus)}
+          name={name}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          readOnly={ro}
+          rows={2}
+        />
+      ) : (
+        <input
+          type={type}
+          id={name}
+          className={`form-control${ro ? "-plaintext" : ""}`}
+          placeholder={label}
+          required={Boolean(required)}
+          autoFocus={Boolean(autoFocus)}
+          name={name}
+          value={value}
+          onChange={onChange}
+          autoComplete={autoComplete}
+          readOnly={ro}
+        />
+      )}
+      {type !== 'textarea' && <label htmlFor={name}>{label}</label>}
     </div>
   );
 }

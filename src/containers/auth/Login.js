@@ -20,7 +20,7 @@ class Login extends Component {
     return (
       <form
         className="form-signin"
-        onSubmit={e => this.handleSubmit(e, login, this.state)}
+        onSubmit={e => this.handleSubmit(e, 'loading', login, this.state)}
       >
         <TextInput type="text" name="ro" value="" label="" required readOnly />
         <TextInput
@@ -30,6 +30,7 @@ class Login extends Component {
           label="Email address"
           onChange={this.handleChange}
           autoComplete="username"
+          autoFocus
           required
         />
         <TextInput
@@ -45,7 +46,7 @@ class Login extends Component {
           <LoadingSpinner />
         ) : (
           <button className="btn btn-lg btn-primary btn-block" type="submit">
-            Sign in
+            Login
           </button>
         )}
       </form>
