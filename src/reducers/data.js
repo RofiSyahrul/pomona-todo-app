@@ -12,20 +12,20 @@ import {
   DELETE_TODO,
   DELETE_TODO_SUCCESS,
   DELETE_TODO_FAILED,
-  REMOVE_MESSAGE
-} from "../constants";
+  REMOVE_MESSAGE,
+  CLEAN_TODO
+} from '../constants';
 
-export default function data(
-  state = {
-    todos: [],
-    page: 1,
-    status: "",
-    title: "",
-    message: { text: "", type: "" },
-    hasMore: true
-  },
-  action
-) {
+const initialState = {
+  todos: [],
+  page: 1,
+  status: '',
+  title: '',
+  message: { text: '', type: '' },
+  hasMore: true
+};
+
+export default function data(state = initialState, action) {
   const {
     type,
     todos,
@@ -46,28 +46,28 @@ export default function data(
       newTodos = newTodos.map(todo => ({ ...todo, onEdit: false, sent: true }));
       // Looking for unique todo.id, return the indices
       newTodosId = newTodos
-      .map(todo => todo.id)
-      .map((id, i, arr) => arr.indexOf(id))
-      .filter((index, i, arr) => arr.indexOf(index) === i);
+        .map(todo => todo.id)
+        .map((id, i, arr) => arr.indexOf(id))
+        .filter((index, i, arr) => arr.indexOf(index) === i);
       // Looking for new todos that have distinc id
       newTodos = newTodos.filter((todo, i) => newTodosId.includes(i));
       newHasMore =
         status === state.status && title === state.title
-          ? newTodos.length > state.todos
+          ? newTodos.length > state.todos.length
           : true;
       return {
         todos: newTodos,
         page,
         status,
         title,
-        message: { text: "", type: "" },
+        message: { text: '', type: '' },
         hasMore: newHasMore
       };
 
     case LOAD_TODO_FAILED:
       return {
         ...state,
-        message: { text: "Failed to load data", type: "error" }
+        message: { text: 'Failed to load data', type: 'error' }
       };
 
     case ADD_TODO_SUCCESS:
@@ -78,13 +78,13 @@ export default function data(
           onEdit: false,
           sent: true
         })),
-        message: { text: message, type: "success" }
+        message: { text: message, type: 'success' }
       };
 
     case ADD_TODO_FAILED:
       return {
         ...state,
-        message: { text: message, type: "error" }
+        message: { text: message, type: 'error' }
       };
 
     case TOGGLE_TODO:
@@ -94,7 +94,7 @@ export default function data(
           ...todo,
           ...(todo.id === id && { isDone })
         })),
-        message: { text: "", type: "" }
+        message: { text: '', type: '' }
       };
 
     case EDIT_ON:
@@ -104,7 +104,7 @@ export default function data(
           ...todo,
           ...(todo.id === id && { onEdit: true })
         })),
-        message: { text: "", type: "" }
+        message: { text: '', type: '' }
       };
 
     case EDIT_OFF:
@@ -114,7 +114,7 @@ export default function data(
           ...todo,
           ...(todo.id === id && { onEdit: false })
         })),
-        message: { text: "", type: "" }
+        message: { text: '', type: '' }
       };
 
     case EDIT_TODO:
@@ -125,7 +125,7 @@ export default function data(
           ...todoItem,
           ...(todoItem.id === todo.id && todo)
         })),
-        message: { text: "", type: "" }
+        message: { text: '', type: '' }
       };
 
     case EDIT_TODO_FAILED:
@@ -135,24 +135,27 @@ export default function data(
           ...todoItem,
           ...(todoItem.id === todo.id && todo)
         })),
-        message: { text: message, type: "error" }
+        message: { text: message, type: 'error' }
       };
 
     case DELETE_TODO:
       return { ...state, todos: state.todos.filter(todo => todo.id !== id) };
 
     case DELETE_TODO_SUCCESS:
-      return { ...state, message: { text: message, type: "success" } };
+      return { ...state, message: { text: message, type: 'success' } };
 
     case DELETE_TODO_FAILED:
       return {
         ...state,
         todos: [...state.todos, todo].sort((obj1, obj2) => obj1.id - obj2.id),
-        message: { text: message, type: "error" }
+        message: { text: message, type: 'error' }
       };
+
+    case CLEAN_TODO:
+      return initialState;
 
     case REMOVE_MESSAGE:
     default:
-      return { ...state, message: { text: "", type: "" } };
+      return { ...state, message: { text: '', type: '' } };
   }
 }

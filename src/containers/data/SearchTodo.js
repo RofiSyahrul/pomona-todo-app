@@ -13,7 +13,7 @@ class SearchTodo extends Component {
 
   handleKeyUp = () => {
     this.props.search(this.state.title);
-    this.resetPage();
+    this.props.resetPage();
   };
 
   render() {

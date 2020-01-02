@@ -1,4 +1,4 @@
-import { push } from "connected-react-router";
+import { push } from 'connected-react-router';
 import {
   BASE_URL,
   LIMIT,
@@ -16,10 +16,10 @@ import {
   DELETE_TODO_SUCCESS,
   DELETE_TODO_FAILED,
   REMOVE_MESSAGE
-} from "../constants";
-import { showNotif } from "../helpers/showNotif";
+} from '../constants';
+import { showNotif } from '../helpers/showNotif';
 
-const TODO_URL = BASE_URL + "/todo";
+const TODO_URL = BASE_URL + '/todo';
 
 // START LOAD TODO
 const loadTodoSuccess = ({ todos = [], page, status, title }) => ({
@@ -36,14 +36,14 @@ export function loadTodos({ page, status, title }, cb = () => {}) {
   return (dispatch, getState) => {
     const { auth } = getState();
     let { token } = auth;
-    if (!token) token = localStorage.getItem("token");
+    if (!token) token = localStorage.getItem('token');
     if (token) {
       let url = TODO_URL + `/user?skip=${page - 1}&limit=${LIMIT}`;
-      if (["all", "done", "undone"].includes(status))
+      if (['all', 'done', 'undone'].includes(status))
         url += `&filter=${status}`;
       if (title) url += `&q=${title}`;
       fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {
           Authorization: token
         }
@@ -62,7 +62,7 @@ export function loadTodos({ page, status, title }, cb = () => {}) {
         });
     } else {
       dispatch(loadTodoFailed());
-      dispatch(push("/"));
+      dispatch(push('/'));
       cb();
     }
   };
@@ -76,7 +76,7 @@ const addTodoSuccess = todo => ({
   message: `${todo.title} has been added to todo list.`
 });
 
-const addTodoFailed = (message = "Failed to add todo") => ({
+const addTodoFailed = (message = 'Failed to add todo') => ({
   type: ADD_TODO_FAILED,
   message
 });
@@ -84,11 +84,11 @@ const addTodoFailed = (message = "Failed to add todo") => ({
 export function addTodo({ title, priority, note }, cb = () => {}) {
   return dispatch => {
     return fetch(TODO_URL, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token")
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: localStorage.getItem('token')
       },
       body: JSON.stringify({ title, priority, note })
     })
@@ -99,10 +99,10 @@ export function addTodo({ title, priority, note }, cb = () => {}) {
         if (statusCode === 200) {
           dispatch(addTodoSuccess(data));
           message = `${data.title} has been added to todo list.`;
-          type = "success";
+          type = 'success';
         } else {
-          message = "Add todo failed.";
-          type = "error";
+          message = 'Add todo failed.';
+          type = 'error';
           dispatch(addTodoFailed(message));
         }
         cb();
@@ -111,7 +111,7 @@ export function addTodo({ title, priority, note }, cb = () => {}) {
       .catch(() => {
         dispatch(addTodoFailed());
         cb();
-        showNotif({ text: "Add todo failed.", type: "error" });
+        showNotif({ text: 'Add todo failed.', type: 'error' });
       });
   };
 }
@@ -123,12 +123,12 @@ const toggleTodoRedux = ({ id, isDone }) => ({ type: TOGGLE_TODO, id, isDone });
 export function toggleTodo({ id, isDone }) {
   return dispatch => {
     dispatch(toggleTodoRedux({ id, isDone }));
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     return fetch(`${TODO_URL}/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
         Authorization: token
       },
       body: JSON.stringify({ isDone })
@@ -164,11 +164,11 @@ export function editTodo(newTodo = {}, oldTodo = {}) {
     dispatch(editTodoRedux(newTodo));
     dispatch(setEditToOFF(id));
     return fetch(`${TODO_URL}/${id}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token")
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: localStorage.getItem('token')
       },
       body: JSON.stringify(newTodo)
     })
@@ -177,12 +177,12 @@ export function editTodo(newTodo = {}, oldTodo = {}) {
         const { data, statusCode } = response;
         let message, type;
         if (statusCode === 200) {
-          message = "Edit success";
-          type = "success";
+          message = 'Edit success';
+          type = 'success';
           dispatch(editTodoSuccess(data));
         } else {
-          message = "Edit failed";
-          type = "error";
+          message = 'Edit failed';
+          type = 'error';
           dispatch(
             editTodoFailed({
               oldTodo,
@@ -193,8 +193,8 @@ export function editTodo(newTodo = {}, oldTodo = {}) {
         showNotif({ text: message, type });
       })
       .catch(() => {
-        showNotif({ text: "Edit failed.", type: "error" });
-        dispatch(editTodoFailed({ oldTodo, message: "Edit failed." }));
+        showNotif({ text: 'Edit failed.', type: 'error' });
+        dispatch(editTodoFailed({ oldTodo, message: 'Edit failed.' }));
       });
   };
 }
@@ -217,14 +217,14 @@ const deleteTodoFailed = ({ todo = {}, message }) => ({
 
 export function deleteTodo(todo = {}) {
   const { id } = todo;
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(deleteTodoRedux(id));
     return fetch(`${TODO_URL}/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: localStorage.getItem("token")
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: localStorage.getItem('token')
       }
     })
       .then(res => res.json())
@@ -235,19 +235,22 @@ export function deleteTodo(todo = {}) {
         } = response;
         let type;
         if (statusCode === 200) {
-          type = "success";
+          type = 'success';
+          const { page, status, title, todos } = getState().data;
+          if (page === 1 || todos.length <= LIMIT)
+            dispatch(loadTodos({ page: 1, status, title }));
           dispatch(deleteTodoSuccess({ id, message }));
         } else {
-          message = "You must be logged in. Delete failed.";
-          type = "error";
+          message = 'You must be logged in. Delete failed.';
+          type = 'error';
           dispatch(deleteTodoFailed({ todo, message }));
-          dispatch(push("/"));
+          dispatch(push('/'));
         }
         showNotif({ text: message, type });
       })
       .catch(() => {
-        showNotif({ text: "Delete failed.", type: "error" });
-        dispatch(deleteTodoFailed({ todo, message: "Delete failed." }));
+        showNotif({ text: 'Delete failed.', type: 'error' });
+        dispatch(deleteTodoFailed({ todo, message: 'Delete failed.' }));
       });
   };
 }

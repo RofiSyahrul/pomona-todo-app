@@ -5,7 +5,8 @@ import {
   REGISTER_FAILED,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
-  LOGOUT
+  LOGOUT,
+  CLEAN_TODO,
 } from "../constants";
 
 // RESPONSE TO REGISTER AND LOGIN
@@ -95,6 +96,7 @@ export function logout() {
   return dispatch => {
     localStorage.removeItem("token");
     dispatch(logoutRedux());
+    dispatch({ type: CLEAN_TODO });
     dispatch(push("/"));
   };
 }
